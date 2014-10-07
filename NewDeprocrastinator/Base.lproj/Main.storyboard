@@ -36,14 +36,29 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Htr-Wt-zpv"/>
+                    <navigationItem key="navigationItem" id="Htr-Wt-zpv">
+                        <nil key="title"/>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a todo" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" id="oU2-5e-0Uw">
+                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="bRa-Cz-Ves">
+                            <connections>
+                                <action selector="onAddButtonPressed:" destination="vXZ-lx-hvc" id="OnW-tC-zho"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="toDoTableView" destination="g2D-xp-665" id="Whn-NM-THd"/>
+                        <outlet property="todoTextField" destination="oU2-5e-0Uw" id="qer-FA-2tW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1104" y="255"/>
+            <point key="canvasLocation" x="329" y="351"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="H4z-0X-bpz">

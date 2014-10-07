@@ -10,6 +10,7 @@
 
 @interface ViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
+@property (weak, nonatomic) IBOutlet UITextField *todoTextField;
 @property NSMutableArray *todos;
 @end
 
@@ -30,6 +31,13 @@
     cell.textLabel.text = [self.todos objectAtIndex:indexPath.row];
     NSLog(@"%@", cell.textLabel.text);
     return cell;
+}
+- (IBAction)onAddButtonPressed:(UIBarButtonItem *)sender {
+
+    NSString *addedString = self.todoTextField.text;
+    [self.todos addObject:addedString];
+    [self.toDoTableView reloadData];
+    self.todoTextField.text = @"";
 }
 
 
