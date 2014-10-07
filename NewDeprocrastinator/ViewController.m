@@ -29,7 +29,6 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"todoCellID"];
     cell.textLabel.text = [self.todos objectAtIndex:indexPath.row];
-    NSLog(@"%@", cell.textLabel.text);
     return cell;
 }
 - (IBAction)onAddButtonPressed:(UIBarButtonItem *)sender {
@@ -38,6 +37,12 @@
     [self.todos addObject:addedString];
     [self.toDoTableView reloadData];
     self.todoTextField.text = @"";
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.textLabel.textColor = [UIColor colorWithRed:0.33 green:0.84 blue:0.49 alpha:1];
+    NSLog(@"Selected");
 }
 
 
