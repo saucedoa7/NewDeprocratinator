@@ -18,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
     self.todos = [[NSMutableArray alloc]initWithObjects:@"One",@"Two",@"Three", @"Four", nil];
 }
@@ -38,12 +39,28 @@
     [self.toDoTableView reloadData];
     self.todoTextField.text = @"";
 }
+- (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
+    UIBarButtonItem *myBarButtonItem = [[UIBarButtonItem alloc] init];
+    myBarButtonItem.title = @"Back"; // or whatever text you want
+    self.navigationItem.backBarButtonItem = myBarButtonItem;
+
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return YES if you want the specified item to be editable.
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        //add code here for when you hit delete
+    }
+}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.textColor = [UIColor colorWithRed:0.33 green:0.84 blue:0.49 alpha:1];
     NSLog(@"Selected");
 }
-
 
 @end

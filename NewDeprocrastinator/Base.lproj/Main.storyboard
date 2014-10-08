@@ -38,6 +38,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="Htr-Wt-zpv">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="bRa-Cz-Ves">
+                            <connections>
+                                <action selector="onAddButtonPressed:" destination="vXZ-lx-hvc" id="OnW-tC-zho"/>
+                            </connections>
+                        </barButtonItem>
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a todo" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" id="oU2-5e-0Uw">
                             <rect key="frame" x="180" y="7" width="240" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -45,9 +50,9 @@
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="bRa-Cz-Ves">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="cfb-Nx-Q73">
                             <connections>
-                                <action selector="onAddButtonPressed:" destination="vXZ-lx-hvc" id="OnW-tC-zho"/>
+                                <action selector="onEditButtonPressed:" destination="vXZ-lx-hvc" id="JBY-wM-PGd"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
