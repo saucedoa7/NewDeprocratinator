@@ -21,7 +21,7 @@
     [super viewDidLoad];
 
     self.todos = [[NSMutableArray alloc]initWithObjects:@"One",@"Two",@"Three", @"Four", nil];
-        self.editButton.title = @"Edit";
+
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -42,10 +42,12 @@
 }
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
 
-    if ([self.editButton.title isEqualToString:@"Edit"]) {
-        self.editButton.title = @"Done";
-    } else {
-        self.editButton.title = @"Edit";
+    if ([sender.title isEqual:@"Edit"]) {
+        [sender setTitle:@"Done"];
+        //[sender setTitle:@"Done" forState:normal];
+    } else if ([sender.title isEqualToString:@"Done"]){
+        [sender setTitle:@"Edit"];
+        //[sender setTitle:@"Edit" forState:normal];
     }
 
 }
@@ -55,17 +57,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //remove the deleted object from your data source.
-        //If your data source is an NSMutableArray, do this
-        [self.todos removeObjectAtIndex:indexPath.row];
-        [self.toDoTableView reloadData]; // tell table to refresh now
-    }
+    [self.todos removeObjectAtIndex:indexPath.row];
+    [self.toDoTableView reloadData];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.textColor = [UIColor colorWithRed:0.33 green:0.84 blue:0.49 alpha:1];
+
+    if ([self.editButton.title isEqualToString:@"Done"]) {
+        [self.todos removeObjectAtIndex:indexPath.row];
+        cell.textLabel.textColor = [UIColor blackColor];
+        [self.toDoTableView reloadData];
+    } else if ([self.editButton.title isEqualToString:@"Edit"]){
+        cell.textLabel.textColor = [UIColor colorWithRed:0.33 green:0.84 blue:0.49 alpha:1];
+    }
+
     NSLog(@"Selected");
 }
 
