@@ -11,6 +11,7 @@
 @interface ViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
 @property (weak, nonatomic) IBOutlet UITextField *todoTextField;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property NSMutableArray *todos;
 @end
 
@@ -18,9 +19,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
     self.todos = [[NSMutableArray alloc]initWithObjects:@"One",@"Two",@"Three", @"Four", nil];
+        self.editButton.title = @"Edit";
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -40,20 +41,25 @@
     self.todoTextField.text = @"";
 }
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
-    UIBarButtonItem *myBarButtonItem = [[UIBarButtonItem alloc] init];
-    myBarButtonItem.title = @"Back"; // or whatever text you want
-    self.navigationItem.backBarButtonItem = myBarButtonItem;
+
+    if ([self.editButton.title isEqualToString:@"Edit"]) {
+        self.editButton.title = @"Done";
+    } else {
+        self.editButton.title = @"Edit";
+    }
 
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return YES if you want the specified item to be editable.
     return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //add code here for when you hit delete
+        //remove the deleted object from your data source.
+        //If your data source is an NSMutableArray, do this
+        [self.todos removeObjectAtIndex:indexPath.row];
+        [self.toDoTableView reloadData]; // tell table to refresh now
     }
 }
 

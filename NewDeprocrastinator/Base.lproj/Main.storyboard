@@ -57,6 +57,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="cfb-Nx-Q73" id="Bf5-os-0CW"/>
                         <outlet property="toDoTableView" destination="g2D-xp-665" id="Whn-NM-THd"/>
                         <outlet property="todoTextField" destination="oU2-5e-0Uw" id="qer-FA-2tW"/>
                     </connections>
