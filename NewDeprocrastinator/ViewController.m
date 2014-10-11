@@ -1,10 +1,8 @@
-//
 //  ViewController.m
 //  NewDeprocrastinator
 //
 //  Created by Albert Saucedo on 10/5/14.
 //  Copyright (c) 2014 Albert Saucedo. All rights reserved.
-//
 
 #import "ViewController.h"
 
@@ -21,7 +19,6 @@
     [super viewDidLoad];
 
     self.todos = [[NSMutableArray alloc]initWithObjects:@"One",@"Two",@"Three", @"Four", nil];
-
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -33,6 +30,7 @@
     cell.textLabel.text = [self.todos objectAtIndex:indexPath.row];
     return cell;
 }
+
 - (IBAction)onAddButtonPressed:(UIBarButtonItem *)sender {
 
     NSString *addedString = self.todoTextField.text;
@@ -40,16 +38,18 @@
     [self.toDoTableView reloadData];
     self.todoTextField.text = @"";
 }
+
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
 
     if ([sender.title isEqual:@"Edit"]) {
         [sender setTitle:@"Done"];
-        //[sender setTitle:@"Done" forState:normal];
     } else if ([sender.title isEqualToString:@"Done"]){
         [sender setTitle:@"Edit"];
-        //[sender setTitle:@"Edit" forState:normal];
     }
+}
 
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"Delete it";
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -57,8 +57,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.todos removeObjectAtIndex:indexPath.row];
-    [self.toDoTableView reloadData];
+
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.todos removeObjectAtIndex:indexPath.row];
+        [self.toDoTableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.toDoTableView reloadData];
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -73,6 +77,10 @@
     }
 
     NSLog(@"Selected");
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 100;
 }
 
 @end
