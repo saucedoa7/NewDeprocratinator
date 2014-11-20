@@ -12,7 +12,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
 @property (weak, nonatomic) IBOutlet UITextField *todoTextField;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
-
+@property NSIndexPath *theIndex;
 @property NSMutableArray *todos;
 @end
 
@@ -27,15 +27,22 @@
     self.todoTextField.delegate = self;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.todos.count;
+- (IBAction)onAddButtonPressed:(UIBarButtonItem *)sender {
+
+    NSString *addedString = self.todoTextField.text;
+    [self.todos addObject:addedString];
+    [self.toDoTableView reloadData];
+    self.todoTextField.text = @"";
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"todoCellID"];
-    cell.textLabel.text = [self.todos objectAtIndex:indexPath.row];
-
-    return cell;
+- (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
+    if (!self.toDoTableView.editing) {
+        [sender setTitle: @"Done"];
+        [self.toDoTableView setEditing:YES animated:YES];
+    } else {
+        [sender setTitle:@"Edit" ];
+        [self.toDoTableView setEditing:NO];
+    }
 }
 
 - (IBAction)onSwipe:(UISwipeGestureRecognizer *)sender {
@@ -57,25 +64,42 @@
     }
 }
 
+//Hide KB 2/2
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.todoTextField resignFirstResponder];
+    return YES;
+}
 
-- (IBAction)onAddButtonPressed:(UIBarButtonItem *)sender {
+#pragma mark - tableView functions
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.todos.count;
+}
 
-    NSString *addedString = self.todoTextField.text;
-    [self.todos addObject:addedString];
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"todoCellID"];
+    cell.textLabel.text = [self.todos objectAtIndex:indexPath.row];
+
+    return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 100;
+}
+
+-(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+
+    NSString *stringToMove = [self.todos objectAtIndex:sourceIndexPath.row];
+
+    [self.todos removeObjectAtIndex:sourceIndexPath.row];
+    [self.todos insertObject:stringToMove atIndex:destinationIndexPath.row];
+
     [self.toDoTableView reloadData];
-    self.todoTextField.text = @"";
 }
 
-- (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
-    if (self.toDoTableView.editing) {
-        sender.title = @"Done";
-        [self.toDoTableView setEditing:YES animated:YES];
-    } else {
-        sender.title = @"Edit";
-        self.editing = NO;
-        [self.toDoTableView setEditing:NO];
-    }
-}
 
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
     return @"Delete Bruh";
@@ -84,6 +108,8 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
+
+
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 
@@ -95,45 +121,30 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
-    if ([self.editButton.title isEqualToString:@"Done"]) {
-        [self.todos removeObjectAtIndex:indexPath.row];
-        cell.textLabel.textColor = [UIColor blackColor];
-        [self.toDoTableView reloadData];
-    } else if ([self.editButton.title isEqualToString:@"Edit"]){
-        cell.textLabel.textColor = [UIColor blackColor];
+    if (!self.toDoTableView.editing) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.textLabel.textColor = [UIColor greenColor];
+    } else if (!self.toDoTableView.editing){
+
+        //Tell which indexPath is being deleted
+        self.theIndex = indexPath;
+
+        //Delete the second row
+        NSLog(@"Alert!");
+        [self DeleteAlet];
     }
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100;
+#pragma mark - Helpers
+
+-(void)DeleteAlet{
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to delete it?"
+                                                          message:@"This cannot be undone"
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:nil, nil];
+    [deleteAlert show];
 }
 
--(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
-
-
-    NSMutableArray *originArray = [self.todos objectAtIndex:sourceIndexPath.section];
-    NSMutableArray *destinyArray = [self.todos objectAtIndex:destinationIndexPath.section];
-
-    [destinyArray addObject:[originArray objectAtIndex:sourceIndexPath.row]];
-    [originArray removeObjectAtIndex:sourceIndexPath.row];
-    [self.toDoTableView reloadData];
-}
-
-//Hide KB 2/2
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [self.todoTextField resignFirstResponder];
-    return YES;
-}
-
-#pragma mark - Swipe Right function
-
-/*
- -(void)screenWasSwiped:(NSIndexPath *)indexPath{
- NSLog(@"Swiped!");
- self.lblChangeColor.textColor = [UIColor colorWithRed:0.97 green:0 blue:0.27 alpha:1];
- 
- }
- */
 @end

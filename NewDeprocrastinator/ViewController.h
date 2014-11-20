@@ -10,8 +10,6 @@
 
 @interface ViewController : UIViewController
 
-
-//-(void)screenWasSwiped:(NSIndexPath *)indexPath;
-
+-(void)DeleteAlet;
 @end
 
