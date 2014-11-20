@@ -5,13 +5,17 @@
 //  Copyright (c) 2014 Albert Saucedo. All rights reserved.
 
 #import "ViewController.h"
+#import "CustomTableViewCell.h"
 
-@interface ViewController ()<UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate>
+@interface ViewController ()<UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate, UIGestureRecognizerDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
 @property (weak, nonatomic) IBOutlet UITextField *todoTextField;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
+
 @property NSMutableArray *todos;
 @end
+
 
 @implementation ViewController
 
@@ -19,7 +23,6 @@
     [super viewDidLoad];
     self.toDoTableView.backgroundColor = [UIColor colorWithRed:0.25 green:0.6 blue:0.38 alpha:1];
     self.todos = [[NSMutableArray alloc]initWithObjects:@"One",@"Two",@"Three", @"Four", nil];
-
     //Hide KB 1/2
     self.todoTextField.delegate = self;
 }
@@ -35,6 +38,26 @@
     return cell;
 }
 
+- (IBAction)onSwipe:(UISwipeGestureRecognizer *)sender {
+    //Get indexPath where you swipe
+
+    NSIndexPath *indexPath = [self.toDoTableView indexPathForRowAtPoint:[sender locationInView:self.toDoTableView]];
+    UITableViewCell *cell = [self.toDoTableView cellForRowAtIndexPath:indexPath];
+
+    if (!self.toDoTableView.editing) {
+        if ([cell.textLabel.textColor  isEqual:[UIColor blackColor]]) {
+            cell.textLabel.textColor = [UIColor greenColor];
+        } else if ([cell.textLabel.textColor isEqual:[UIColor greenColor]]) {
+            cell.textLabel.textColor = [UIColor yellowColor];
+        } else if ([cell.textLabel.textColor isEqual:[UIColor yellowColor]]) {
+            cell.textLabel.textColor = [UIColor redColor];
+        } else if ([cell.textLabel.textColor isEqual:[UIColor redColor] ]) {
+            cell.textLabel.textColor = [UIColor blackColor];
+        }
+    }
+}
+
+
 - (IBAction)onAddButtonPressed:(UIBarButtonItem *)sender {
 
     NSString *addedString = self.todoTextField.text;
@@ -44,11 +67,13 @@
 }
 
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
-
-    if ([sender.title isEqual:@"Edit"]) {
-        [sender setTitle:@"Done"];
-    } else if ([sender.title isEqualToString:@"Done"]){
-        [sender setTitle:@"Edit"];
+    if (self.toDoTableView.editing) {
+        sender.title = @"Done";
+        [self.toDoTableView setEditing:YES animated:YES];
+    } else {
+        sender.title = @"Edit";
+        self.editing = NO;
+        [self.toDoTableView setEditing:NO];
     }
 }
 
@@ -77,7 +102,7 @@
         cell.textLabel.textColor = [UIColor blackColor];
         [self.toDoTableView reloadData];
     } else if ([self.editButton.title isEqualToString:@"Edit"]){
-        cell.textLabel.textColor = [UIColor colorWithRed:0.33 green:0.84 blue:0.49 alpha:1];
+        cell.textLabel.textColor = [UIColor blackColor];
     }
 }
 
@@ -96,11 +121,19 @@
     [self.toDoTableView reloadData];
 }
 
-    //Hide KB 2/2
+//Hide KB 2/2
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [self.todoTextField resignFirstResponder];
     return YES;
 }
 
+#pragma mark - Swipe Right function
 
+/*
+ -(void)screenWasSwiped:(NSIndexPath *)indexPath{
+ NSLog(@"Swiped!");
+ self.lblChangeColor.textColor = [UIColor colorWithRed:0.97 green:0 blue:0.27 alpha:1];
+ 
+ }
+ */
 @end

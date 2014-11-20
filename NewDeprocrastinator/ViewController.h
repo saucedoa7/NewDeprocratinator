@@ -10,5 +10,8 @@
 
 @interface ViewController : UIViewController
 
+
+//-(void)screenWasSwiped:(NSIndexPath *)indexPath;
+
 @end
 

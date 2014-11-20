@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5026E6601A0DD87C0038C8EB /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5026E65F1A0DD87B0038C8EB /* CustomTableViewCell.m */; };
 		509F4D7D19E23F4800A80523 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 509F4D7C19E23F4800A80523 /* main.m */; };
 		509F4D8019E23F4800A80523 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 509F4D7F19E23F4800A80523 /* AppDelegate.m */; };
 		509F4D8319E23F4800A80523 /* NewDeprocrastinator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 509F4D8119E23F4800A80523 /* NewDeprocrastinator.xcdatamodeld */; };
@@ -28,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5026E65E1A0DD87B0038C8EB /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		5026E65F1A0DD87B0038C8EB /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
 		509F4D7719E23F4800A80523 /* NewDeprocrastinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewDeprocrastinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		509F4D7B19E23F4800A80523 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		509F4D7C19E23F4800A80523 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -65,6 +68,8 @@
 		509F4D6E19E23F4800A80523 = {
 			isa = PBXGroup;
 			children = (
+				5026E65E1A0DD87B0038C8EB /* CustomTableViewCell.h */,
+				5026E65F1A0DD87B0038C8EB /* CustomTableViewCell.m */,
 				509F4D7919E23F4800A80523 /* NewDeprocrastinator */,
 				509F4D9619E23F4800A80523 /* NewDeprocrastinatorTests */,
 				509F4D7819E23F4800A80523 /* Products */,
@@ -225,6 +230,7 @@
 				509F4D8019E23F4800A80523 /* AppDelegate.m in Sources */,
 				509F4D8319E23F4800A80523 /* NewDeprocrastinator.xcdatamodeld in Sources */,
 				509F4D8619E23F4800A80523 /* ViewController.m in Sources */,
+				5026E6601A0DD87C0038C8EB /* CustomTableViewCell.m in Sources */,
 				509F4D7D19E23F4800A80523 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,6 +422,7 @@
 				509F4D9F19E23F4800A80523 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		509F4DA019E23F4800A80523 /* Build configuration list for PBXNativeTarget "NewDeprocrastinatorTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +431,7 @@
 				509F4DA219E23F4800A80523 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
