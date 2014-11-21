@@ -7,12 +7,13 @@
 #import "ViewController.h"
 #import "CustomTableViewCell.h"
 
-@interface ViewController ()<UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface ViewController ()<UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
 @property (weak, nonatomic) IBOutlet UITextField *todoTextField;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
-@property NSIndexPath *theIndex;
+
+@property (weak, nonatomic) NSIndexPath *indexPathToBeDeleted;
 @property NSMutableArray *todos;
 @end
 
@@ -23,6 +24,7 @@
     [super viewDidLoad];
     self.toDoTableView.backgroundColor = [UIColor colorWithRed:0.25 green:0.6 blue:0.38 alpha:1];
     self.todos = [[NSMutableArray alloc]initWithObjects:@"One",@"Two",@"Three", @"Four", nil];
+
     //Hide KB 1/2
     self.todoTextField.delegate = self;
 }
@@ -83,7 +85,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100;
+    return 50;
 }
 
 -(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -103,6 +105,7 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
     return @"Delete Bruh";
+    
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -112,11 +115,34 @@
 
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-
+//Alert Before deleting 1/2
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.todos removeObjectAtIndex:indexPath.row];
-        [self.toDoTableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [self.toDoTableView reloadData];
+        self.indexPathToBeDeleted = indexPath;
+
+        UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to delete it?"
+                                                              message:@"This cannot be undone"
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                                    otherButtonTitles:@"Delete", nil];
+        [deleteAlert show];
+    // do not delete it here. So far the alter has not even been shown yet. It will not been shown to the user before this current method is finished.
+    }
+}
+
+//Alert Before deleting 2/2
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+
+    if ([title isEqualToString:@"Cancel"]) {
+        NSLog(@"Do not delete cell");
+    } else if([title isEqualToString:@"Delete"]) {
+        [self.todos removeObjectAtIndex:[self.indexPathToBeDeleted row]];
+        [self.toDoTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToBeDeleted]
+                                  withRowAnimation:UITableViewRowAnimationFade];
+        NSLog(@"Delete Cell");
+
     }
 }
 
@@ -125,26 +151,21 @@
     if (!self.toDoTableView.editing) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.textLabel.textColor = [UIColor greenColor];
+
     } else if (!self.toDoTableView.editing){
 
         //Tell which indexPath is being deleted
-        self.theIndex = indexPath;
+        self.indexPathToBeDeleted = indexPath;
 
         //Delete the second row
         NSLog(@"Alert!");
-        [self DeleteAlet];
     }
 }
 
 #pragma mark - Helpers
 
 -(void)DeleteAlet{
-    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to delete it?"
-                                                          message:@"This cannot be undone"
-                                                         delegate:self
-                                                cancelButtonTitle:@"No"
-                                                otherButtonTitles:nil, nil];
-    [deleteAlert show];
+
 }
 
 @end
